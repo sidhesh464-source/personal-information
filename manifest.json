@@ -1,0 +1,17 @@
+{
+  "name": "Personal Details",
+  "short_name": "LuxeDetails",
+  "description": "Securely manage your personal account details and access your 3D calendar.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#818cf8",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

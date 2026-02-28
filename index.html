@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Dashboard | Auth & 3D Calendar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="theme-color" content="#020617">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="bg-overlay"></div>
+    <div id="app-container">
+        <!-- Login View -->
+        <section id="login-view" class="view active">
+            <div class="glass-card auth-card">
+                <h1>Welcome Back</h1>
+                <p class="subtitle">Enter your credentials to access your dashboard</p>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" required placeholder="Enter username">
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Password (Date of Birth)</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-password" required placeholder="15-01-2008">
+                            <button type="button" id="toggle-password" class="toggle-btn">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="primary-btn">
+                        <span>Login</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                    <p class="switch-view">Don't have an account? <a href="#" id="go-to-register">Register here</a></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Register View -->
+        <section id="register-view" class="view">
+            <div class="glass-card auth-card">
+                <h1>Create Account</h1>
+                <p class="subtitle">Join our premium experience</p>
+                <form id="register-form">
+                    <div class="input-group">
+                        <label for="reg-username">Choose Username</label>
+                        <input type="text" id="reg-username" required placeholder="Your Name">
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-dob">Date of Birth (Password)</label>
+                        <input type="date" id="reg-dob" required>
+                    </div>
+                    <button type="submit" class="primary-btn">
+                        <span>Sign Up</span>
+                        <i data-lucide="user-plus"></i>
+                    </button>
+                    <p class="switch-view">Already have an account? <a href="#" id="go-to-login">Login here</a></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Home View -->
+        <section id="home-view" class="view">
+            <nav class="navbar">
+                <div class="nav-left">
+                    <span class="logo">Personal Details</span>
+                </div>
+                <div class="nav-center">
+                    <div id="real-time-clock" class="clock-display">00:00:00</div>
+                </div>
+                <div class="nav-right">
+                    <div class="menu-items">
+                        <a href="#" id="nav-home" class="nav-link active">Home</a>
+                        <a href="#" id="nav-details" class="nav-link">
+                            <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
+                        </a>
+                        <a href="#" id="nav-password" class="nav-link">
+                            <i data-lucide="lock" style="width:16px; margin-right:4px"></i>Password
+                        </a>
+                        <a href="#" id="nav-remove" class="nav-link" style="color: #ef4444;">
+                            <i data-lucide="user-x" style="width:16px; margin-right:4px"></i>Remove
+                        </a>
+                        <button id="logout-btn" class="nav-link logout-btn">
+                            <i data-lucide="log-out" style="width:16px; margin-right:4px"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="dashboard-content">
+                <div class="hero-section">
+                    <h2 id="welcome-message">Hello, User</h2>
+                    <p>Experience your time in 3 dimensions of elegance.</p>
+                </div>
+
+                <div class="calendar-3d-wrapper">
+                    <div id="perspective-root" class="calendar-perspective-container">
+                        <div id="calendar-3d-grid" class="calendar-3d-grid">
+                            <!-- JS will inject calendar here -->
+                        </div>
+                    </div>
+                    <div class="calendar-controls">
+                        <button id="prev-month"><i data-lucide="chevron-left"></i></button>
+                        <h3 id="current-month-year">March 2026</h3>
+                        <button id="next-month"><i data-lucide="chevron-right"></i></button>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <!-- Details View -->
+        <section id="details-view" class="view">
+            <nav class="navbar">
+                <div class="nav-left">
+                    <span class="logo">Personal Details</span>
+                </div>
+                <div class="nav-center">
+                    <div class="clock-display">00:00:00</div>
+                </div>
+                <div class="nav-right">
+                    <div class="menu-items">
+                        <a href="#" id="det-nav-home" class="nav-link">Home</a>
+                        <a href="#" class="nav-link active">Details</a>
+                        <a href="#" id="det-nav-password" class="nav-link">Password</a>
+                        <a href="#" id="det-nav-remove" class="nav-link" style="color: #ef4444;">Remove</a>
+                        <button class="nav-link logout-btn">Logout</button>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="dashboard-content" style="margin-top: 5rem;">
+                <div class="details-header"
+                    style="width: 100%; max-width: 800px; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center;">
+                    <button id="show-reg-form-btn" class="primary-btn" style="max-width: 200px;">
+                        <i data-lucide="plus-circle" style="margin-right: 8px;"></i>Register Details
+                    </button>
+
+                    <div id="details-reg-form-container" class="glass-card"
+                        style="width: 100%; max-width: 500px; padding: 2rem; margin-top: 1.5rem; display: none;">
+                        <h3 style="margin-bottom: 1.5rem; text-align: center;">New Entry</h3>
+                        <form id="record-details-form">
+                            <div class="input-group">
+                                <label>Username</label>
+                                <input type="text" id="det-username" required placeholder="User name">
+                            </div>
+                            <div class="input-group">
+                                <label>Password</label>
+                                <input type="text" id="det-password" required placeholder="Secret Key">
+                            </div>
+                            <div class="input-group">
+                                <label>Purpose</label>
+                                <input type="text" id="det-purpose" required placeholder="e.g. Google, GitHub">
+                            </div>
+                            <button type="submit" class="primary-btn">Save Entry</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="width: 100%; max-width: 800px; padding: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem;">Stored Details</h3>
+                    <div class="scroll-container" style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--glass-border);">
+                                    <th style="padding: 1rem; color: var(--primary);">Purpose</th>
+                                    <th style="padding: 1rem; color: var(--primary);">Username</th>
+                                    <th style="padding: 1rem; color: var(--primary);">Password</th>
+                                </tr>
+                            </thead>
+                            <tbody id="details-list-body">
+                                <!-- entries will appear here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <!-- Remove Account View -->
+        <section id="remove-view" class="view">
+            <nav class="navbar">
+                <div class="nav-left">
+                    <span class="logo">Personal Details</span>
+                </div>
+                <div class="nav-right">
+                    <div class="menu-items">
+                        <a href="#" id="rem-nav-home" class="nav-link">Home</a>
+                        <a href="#" id="rem-nav-details" class="nav-link">Details</a>
+                        <a href="#" id="rem-nav-password" class="nav-link">Password</a>
+                        <a href="#" class="nav-link active"
+                            style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Remove</a>
+                        <button class="nav-link logout-btn">Logout</button>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="glass-card auth-card" style="margin-top: 2rem; border-color: rgba(239, 68, 68, 0.3);">
+                <h1
+                    style="background: linear-gradient(135deg, #fff 30%, #ef4444); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                    Delete Account</h1>
+                <p class="subtitle">This action is permanent and cannot be undone.</p>
+                <form id="remove-account-form">
+                    <div class="input-group">
+                        <label>Confirm Username</label>
+                        <input type="text" id="rem-username" required placeholder="To verify, enter username">
+                    </div>
+                    <div class="input-group">
+                        <label>Confirm Password (DOB)</label>
+                        <input type="password" id="rem-password" required placeholder="15-01-2008">
+                    </div>
+                    <button type="submit" class="primary-btn"
+                        style="background: linear-gradient(135deg, #ef4444, #991b1b); box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);">
+                        <span>Remove Permanently</span>
+                        <i data-lucide="trash-2"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section id="password-view" class="view">
+            <nav class="navbar">
+                <div class="nav-left">
+                    <span class="logo">Personal Details</span>
+                </div>
+                <div class="nav-right">
+                    <div class="menu-items">
+                        <a href="#" id="back-to-home" class="nav-link">
+                            <i data-lucide="arrow-left" style="width:16px; margin-right:4px"></i>Back to Home
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="glass-card auth-card" style="margin-top: 2rem;">
+                <h1>Security</h1>
+                <p class="subtitle">Update security (e.g., 15-01-2008)</p>
+                <form id="change-password-form">
+                    <div class="input-group">
+                        <label>Current DOB / Password</label>
+                        <input type="password" id="current-p" required placeholder="15-01-2008">
+                    </div>
+                    <div class="input-group">
+                        <label>New Password</label>
+                        <input type="password" id="new-p" required placeholder="Example: 15-01-2008">
+                    </div>
+                    <button type="submit" class="primary-btn">
+                        <span>Update Security</span>
+                        <i data-lucide="shield-check"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <div id="notification-toast" class="toast hidden"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
