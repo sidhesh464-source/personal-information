@@ -1,4 +1,4 @@
-const CACHE_NAME = 'luxe-details-v3';
+const CACHE_NAME = 'luxe-details-v4';
 const ASSETS = [
     '/',
     '/index.html',
