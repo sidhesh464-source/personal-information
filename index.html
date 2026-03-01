@@ -29,9 +29,9 @@
                         <input type="text" id="login-username" required placeholder="Enter username">
                     </div>
                     <div class="input-group">
-                        <label for="login-password">Password (Date of Birth)</label>
+                        <label for="login-password">Password</label>
                         <div class="password-wrapper">
-                            <input type="password" id="login-password" required placeholder="15-01-2008">
+                            <input type="password" id="login-password" required placeholder="Enter password">
                             <button type="button" id="toggle-password" class="toggle-btn">
                                 <i data-lucide="eye"></i>
                             </button>
@@ -57,8 +57,8 @@
                         <input type="text" id="reg-username" required placeholder="Your Name">
                     </div>
                     <div class="input-group">
-                        <label for="reg-dob">Date of Birth (Password)</label>
-                        <input type="date" id="reg-dob" required>
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" required placeholder="Create password">
                     </div>
                     <button type="submit" class="primary-btn">
                         <span>Sign Up</span>
@@ -73,17 +73,18 @@
         <section id="home-view" class="view">
             <nav class="navbar">
                 <div class="nav-left">
-                    <span class="logo">📄</span>
+                    <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center">
+                <div class="nav-center" style="display: flex; align-items: center; gap: 0.8rem;">
                     <div id="real-time-clock" class="clock-display">00:00:00</div>
+                    <a href="#" id="nav-details" class="nav-link"
+                        style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
+                        <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
+                    </a>
                 </div>
                 <div class="nav-right">
                     <div class="menu-items">
                         <a href="#" id="nav-home" class="nav-link active">Home</a>
-                        <a href="#" id="nav-details" class="nav-link">
-                            <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
-                        </a>
                         <a href="#" id="nav-password" class="nav-link">
                             <i data-lucide="lock" style="width:16px; margin-right:4px"></i>Password
                         </a>
@@ -122,15 +123,18 @@
         <section id="details-view" class="view">
             <nav class="navbar">
                 <div class="nav-left">
-                    <span class="logo">📄</span>
+                    <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center">
+                <div class="nav-center" style="display: flex; align-items: center; gap: 0.8rem;">
                     <div class="clock-display">00:00:00</div>
+                    <a href="#" class="nav-link active"
+                        style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: 1px solid var(--primary);">
+                        <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
+                    </a>
                 </div>
                 <div class="nav-right">
                     <div class="menu-items">
                         <a href="#" id="det-nav-home" class="nav-link">Home</a>
-                        <a href="#" class="nav-link active">Details</a>
                         <a href="#" id="det-nav-password" class="nav-link">Password</a>
                         <a href="#" id="det-nav-remove" class="nav-link" style="color: #ef4444;">Remove</a>
                         <button class="nav-link logout-btn">Logout</button>
@@ -175,6 +179,7 @@
                                     <th style="padding: 1rem; color: var(--primary);">Purpose</th>
                                     <th style="padding: 1rem; color: var(--primary);">Username</th>
                                     <th style="padding: 1rem; color: var(--primary);">Password</th>
+                                    <th style="padding: 1rem; color: var(--primary); text-align: right;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="details-list-body">
@@ -192,10 +197,16 @@
                 <div class="nav-left">
                     <span class="logo">📄</span>
                 </div>
+                <div class="nav-center" style="display: flex; align-items: center; gap: 0.8rem;">
+                    <div class="clock-display">00:00:00</div>
+                    <a href="#" id="rem-nav-details" class="nav-link"
+                        style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
+                        <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
+                    </a>
+                </div>
                 <div class="nav-right">
                     <div class="menu-items">
                         <a href="#" id="rem-nav-home" class="nav-link">Home</a>
-                        <a href="#" id="rem-nav-details" class="nav-link">Details</a>
                         <a href="#" id="rem-nav-password" class="nav-link">Password</a>
                         <a href="#" class="nav-link active"
                             style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Remove</a>
@@ -215,8 +226,8 @@
                         <input type="text" id="rem-username" required placeholder="To verify, enter username">
                     </div>
                     <div class="input-group">
-                        <label>Confirm Password (DOB)</label>
-                        <input type="password" id="rem-password" required placeholder="15-01-2008">
+                        <label>Confirm Password</label>
+                        <input type="password" id="rem-password" required placeholder="Enter password">
                     </div>
                     <button type="submit" class="primary-btn"
                         style="background: linear-gradient(135deg, #ef4444, #991b1b); box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);">
@@ -232,13 +243,16 @@
                 <div class="nav-left">
                     <span class="logo">📄</span>
                 </div>
-                <div class="nav-center">
+                <div class="nav-center" style="display: flex; align-items: center; gap: 0.8rem;">
                     <div class="clock-display">00:00:00</div>
+                    <a href="#" id="pass-nav-details" class="nav-link"
+                        style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
+                        <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
+                    </a>
                 </div>
                 <div class="nav-right">
                     <div class="menu-items">
                         <a href="#" id="pass-nav-home" class="nav-link">Home</a>
-                        <a href="#" id="pass-nav-details" class="nav-link">Details</a>
                         <a href="#" class="nav-link active">Password</a>
                         <a href="#" id="pass-nav-remove" class="nav-link" style="color: #ef4444;">Remove</a>
                         <button class="nav-link logout-btn">Logout</button>
@@ -248,15 +262,15 @@
 
             <div class="glass-card auth-card" style="margin-top: 2rem;">
                 <h1>Security</h1>
-                <p class="subtitle">Update security (e.g., 15-01-2008)</p>
+                <p class="subtitle">Update security settings</p>
                 <form id="change-password-form">
                     <div class="input-group">
-                        <label>Current DOB / Password</label>
-                        <input type="password" id="current-p" required placeholder="15-01-2008">
+                        <label>Current Password</label>
+                        <input type="password" id="current-p" required placeholder="Current password">
                     </div>
                     <div class="input-group">
                         <label>New Password</label>
-                        <input type="password" id="new-p" required placeholder="Example: 15-01-2008">
+                        <input type="password" id="new-p" required placeholder="New password">
                     </div>
                     <button type="submit" class="primary-btn">
                         <span>Update Security</span>

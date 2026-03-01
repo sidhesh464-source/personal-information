@@ -183,20 +183,44 @@ function renderDetails() {
     const details = user.details || [];
 
     if (details.length === 0) {
-        listBody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 2rem; color: var(--text-muted);">No entries yet. Click "Register Details" to add one.</td></tr>';
+        listBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 2rem; color: var(--text-muted);">No entries yet. Click "Register Details" to add one.</td></tr>';
         return;
     }
 
-    [...details].reverse().forEach(det => {
+    details.forEach((det, originalIndex) => {
+        // We prepend the tr to simulate reversing, so that new items are at the top
         const tr = document.createElement('tr');
         tr.style.borderBottom = '1px solid var(--glass-border)';
         tr.innerHTML = `
             <td style="padding: 1rem; font-weight: 700; color: var(--secondary);">${det.purpose}</td>
             <td style="padding: 1rem;">${det.username}</td>
             <td style="padding: 1rem; font-family: monospace; color: var(--primary);">${det.pass}</td>
+            <td style="padding: 1rem; text-align: right;">
+                <button onclick="deleteDetail(${originalIndex})" style="background: transparent; border: none; color: #ef4444; cursor: pointer; padding: 5px;">
+                    <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
+                </button>
+            </td>
         `;
-        listBody.appendChild(tr);
+        listBody.insertBefore(tr, listBody.firstChild);
     });
+
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
+}
+
+// Global function so onclick can call it
+window.deleteDetail = function (index) {
+    if (!confirm('Are you sure you want to remove this detail?')) return;
+
+    const users = getUsers();
+    const userIdx = users.findIndex(u => u.username === currentUser.username);
+    if (userIdx > -1) {
+        users[userIdx].details.splice(index, 1);
+        saveUsers(users);
+        showToast('Detail removed successfully.', 'success');
+        renderDetails();
+    }
 }
 
 // --- Event Listeners ---
@@ -294,10 +318,9 @@ function setupEventListeners() {
 
     document.getElementById('register-form').onsubmit = (e) => {
         e.preventDefault();
-        const dob = document.getElementById('reg-dob').value;
-        if (!dob) return showToast('Select Date of Birth', 'error');
-        const [y, m, d] = dob.split('-');
-        handleRegister(document.getElementById('reg-username').value, `${d}-${m}-${y}`);
+        const p = document.getElementById('reg-password').value;
+        if (!p) return showToast('Enter a password', 'error');
+        handleRegister(document.getElementById('reg-username').value, p);
     };
 
     document.getElementById('change-password-form').onsubmit = (e) => {
