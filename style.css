@@ -309,42 +309,84 @@ h1 {
 }
 
 /* Mobile Responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .navbar {
-        padding: 0.6rem 3%;
+        flex-direction: column;
+        padding: 0.8rem 1rem;
+        height: auto;
+        gap: 0.8rem;
     }
 
-    .logo {
-        font-size: 1rem;
+    .nav-left,
+    .nav-center,
+    .nav-right {
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
-    .clock-display {
-        font-size: 1rem;
-        padding: 0.4rem 1rem;
+    .nav-left {
+        justify-content: center;
+        order: 1;
+    }
+
+    .nav-center {
+        order: 2;
+    }
+
+    .nav-right {
+        order: 3;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        /* space for scroll bar if needed */
+        -webkit-overflow-scrolling: touch;
     }
 
     .menu-items {
-        gap: 0.5rem;
+        gap: 0.4rem;
+        flex-wrap: nowrap;
+        /* keep them in a line */
+        justify-content: flex-start;
+        padding: 0 0.5rem;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    .clock-display {
+        font-size: 1.2rem;
+        padding: 0.4rem 1.2rem;
+        border-radius: 12px;
     }
 
     .nav-link {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.75rem;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+        /* don't let them shrink */
+    }
+
+    .dashboard-content {
+        margin-top: 10rem;
+        /* more space for two-row header */
+        padding: 0.5rem 2%;
     }
 
     .auth-card {
-        padding: 2.5rem 1.5rem;
+        padding: 2rem 1rem;
+        width: 95%;
     }
 
     .calendar-3d-grid {
-        gap: 4px;
-        padding: 10px;
+        gap: 2px;
+        padding: 8px;
     }
 
     td,
     th {
-        padding: 0.5rem !important;
-        font-size: 0.8rem;
+        padding: 0.4rem !important;
+        font-size: 0.75rem;
     }
 }
 

@@ -218,6 +218,9 @@ function setupEventListeners() {
         'det-nav-remove': 'remove',
         'rem-nav-home': 'home',
         'rem-nav-details': 'details',
+        'pass-nav-home': 'home',
+        'pass-nav-details': 'details',
+        'pass-nav-remove': 'remove',
         'rem-nav-password': 'password',
         'back-to-home': 'home'
     };
