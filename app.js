@@ -2,7 +2,8 @@ let currentUser = null;
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 
-const STORAGE_KEY = 'personal_db_v2';
+const STORAGE_KEY = 'personal_db_v3';
+const CACHE_NAME = 'personal-details-v19';
 
 const views = {
     login: document.getElementById('login-view'),
@@ -240,6 +241,68 @@ function renderDetails() {
     }
 }
 
+function renderPersonalData() {
+    const container = document.getElementById('personal-data-list');
+    if (!container) return;
+
+    const users = getUsers();
+    const user = users.find(u => u.username === currentUser.username);
+    const personalData = (user && user.personalData) ? user.personalData : [];
+
+    if (personalData.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">No files saved yet. Use "Save Data" to upload.</p>';
+        return;
+    }
+
+    container.innerHTML = '';
+    personalData.forEach((item, idx) => {
+        const row = document.createElement('div');
+        row.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; background: var(--glass); border-radius: 12px; border: 1px solid var(--glass-border); cursor: pointer;';
+        row.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.8rem;">
+                <i data-lucide="file" style="width:20px; color: #10b981;"></i>
+                <div>
+                    <div style="font-weight: 700; color: #fff;">${item.name}</div>
+                    <small style="color: var(--text-muted);">${item.fileType} &bull; ${new Date(item.date).toLocaleDateString()}</small>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button onclick="viewPersonalData(${idx})" style="background: rgba(16,185,129,0.15); border: none; color: #10b981; cursor: pointer; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.78rem;">View</button>
+                <button onclick="deletePersonalData(${idx})" style="background: rgba(239,68,68,0.15); border: none; color: #ef4444; cursor: pointer; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.78rem;">Delete</button>
+            </div>
+        `;
+        container.appendChild(row);
+    });
+    if (window.lucide) window.lucide.createIcons();
+}
+
+window.viewPersonalData = function (idx) {
+    const users = getUsers();
+    const user = users.find(u => u.username === currentUser.username);
+    const item = user.personalData[idx];
+    if (!item) return;
+    const win = window.open();
+    win.document.write(`<html><head><title>${item.name}</title></head><body style='margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh;'>`);
+    if (item.fileType.startsWith('image/')) {
+        win.document.write(`<img src='${item.data}' style='max-width:100%; max-height:100vh;'>`);
+    } else if (item.fileType === 'application/pdf') {
+        win.document.write(`<iframe src='${item.data}' style='width:100vw;height:100vh;border:none;'></iframe>`);
+    } else {
+        win.document.write(`<a href='${item.data}' download='${item.name}' style='color:white; font-size:1.2rem; font-family:sans-serif;'>Click to download: ${item.name}</a>`);
+    }
+    win.document.write('</body></html>');
+}
+
+window.deletePersonalData = function (idx) {
+    if (!confirm('Delete this file?')) return;
+    const users = getUsers();
+    const userIdx = users.findIndex(u => u.username === currentUser.username);
+    users[userIdx].personalData.splice(idx, 1);
+    saveUsers(users);
+    showToast('File deleted.', 'success');
+    renderPersonalData();
+}
+
 window.deleteDetail = function (index) {
     if (!confirm('Are you sure you want to remove this detail?')) return;
 
@@ -304,7 +367,7 @@ function setupEventListeners() {
             el.onclick = (e) => {
                 e.preventDefault();
                 showView(view);
-                if (view === 'details') renderDetails();
+                if (view === 'details') { renderDetails(); renderPersonalData(); }
             };
         }
     });
@@ -313,12 +376,54 @@ function setupEventListeners() {
     const regFormContainer = document.getElementById('details-reg-form-container');
     if (showRegBtn) {
         showRegBtn.onclick = () => {
+            document.getElementById('save-data-form-container').style.display = 'none';
             const isH = regFormContainer.style.display === 'none' || regFormContainer.style.display === '';
             regFormContainer.style.display = isH ? 'block' : 'none';
             showRegBtn.innerHTML = isH ? '<i data-lucide="x-circle" style="margin-right:8px;"></i>Close Form' : '<i data-lucide="plus-circle" style="margin-right:8px;"></i>Register Details';
             window.lucide.createIcons();
         };
     }
+
+    const showSaveDataBtn = document.getElementById('show-save-data-btn');
+    const saveDataFormContainer = document.getElementById('save-data-form-container');
+    if (showSaveDataBtn) {
+        showSaveDataBtn.onclick = () => {
+            document.getElementById('details-reg-form-container').style.display = 'none';
+            document.getElementById('show-reg-form-btn').innerHTML = '<i data-lucide="plus-circle" style="margin-right:8px;"></i>Register Details';
+            const isH = saveDataFormContainer.style.display === 'none' || saveDataFormContainer.style.display === '';
+            saveDataFormContainer.style.display = isH ? 'block' : 'none';
+            showSaveDataBtn.innerHTML = isH ? '<i data-lucide="x" style="margin-right:8px;"></i>Close' : '<i data-lucide="upload" style="margin-right:8px;"></i>Save Data';
+            window.lucide.createIcons();
+        };
+    }
+
+    document.getElementById('save-data-form').onsubmit = (e) => {
+        e.preventDefault();
+        const name = document.getElementById('save-data-name').value;
+        const fileInput = document.getElementById('save-data-file');
+        const file = fileInput.files[0];
+        if (!file) return showToast('Please select a file.', 'error');
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+            const users = getUsers();
+            const userIdx = users.findIndex(u => u.username === currentUser.username);
+            if (!users[userIdx].personalData) users[userIdx].personalData = [];
+            users[userIdx].personalData.push({
+                name,
+                fileType: file.type,
+                data: ev.target.result,
+                date: new Date().toISOString()
+            });
+            saveUsers(users);
+            showToast('File saved!', 'success');
+            document.getElementById('save-data-form').reset();
+            saveDataFormContainer.style.display = 'none';
+            showSaveDataBtn.innerHTML = '<i data-lucide="upload" style="margin-right:8px;"></i>Save Data';
+            window.lucide.createIcons();
+            renderPersonalData();
+        };
+        reader.readAsDataURL(file);
+    };
 
     document.getElementById('record-details-form').onsubmit = (e) => {
         e.preventDefault();
@@ -340,7 +445,7 @@ function setupEventListeners() {
             users[userIdx].details[form.dataset.editIndex] = newDet;
             showToast('Replaced successfully!', 'success');
             delete form.dataset.editIndex;
-            form.querySelector('button[type="submit"]').textContent = 'Save Entry';
+            form.querySelector('button[type="submit"]').textContent = 'Save Password Details';
         } else {
             users[userIdx].details.push(newDet);
             showToast('Saved successfully!', 'success');

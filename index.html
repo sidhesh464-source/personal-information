@@ -75,16 +75,12 @@
                 <div class="nav-left">
                     <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center" style="display: flex; align-items: center; gap: 1.5rem;">
-                    <div id="real-time-clock" class="clock-display">00:00:00</div>
-                    <a href="#" id="nav-details" class="nav-link"
-                        style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
-                        <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
-                    </a>
-                </div>
                 <div class="nav-right">
                     <div class="menu-items">
                         <a href="#" id="nav-home" class="nav-link active">Home</a>
+                        <a href="#" id="nav-details" class="nav-link">
+                            <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
+                        </a>
                         <a href="#" id="nav-password" class="nav-link">
                             <i data-lucide="lock" style="width:16px; margin-right:4px"></i>Password
                         </a>
@@ -103,7 +99,6 @@
                 <div class="calendar-3d-wrapper">
                     <div id="perspective-root" class="calendar-perspective-container">
                         <div id="calendar-3d-grid" class="calendar-3d-grid">
-                            <!-- JS will inject calendar here -->
                         </div>
                     </div>
                     <div class="calendar-controls">
@@ -121,16 +116,13 @@
                 <div class="nav-left">
                     <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center" style="display: flex; align-items: center; gap: 1.5rem;">
-                    <div class="clock-display">00:00:00</div>
-                    <a href="#" class="nav-link active"
-                        style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: 1px solid var(--primary);">
-                        <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
-                    </a>
-                </div>
                 <div class="nav-right">
                     <div class="menu-items">
                         <a href="#" id="det-nav-home" class="nav-link">Home</a>
+                        <a href="#" class="nav-link active"
+                            style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: 1px solid var(--primary);">
+                            <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
+                        </a>
                         <a href="#" id="det-nav-password" class="nav-link">Password</a>
                         <button class="nav-link logout-btn">Logout</button>
                     </div>
@@ -139,10 +131,19 @@
             <main class="dashboard-content" style="margin-top: 14rem;">
                 <div class="details-header"
                     style="width: 100%; max-width: 800px; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center;">
-                    <button id="show-reg-form-btn" class="primary-btn" style="max-width: 200px;">
-                        <i data-lucide="plus-circle" style="margin-right: 8px;"></i>Register Details
-                    </button>
 
+                    <!-- Two action buttons side by side -->
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                        <button id="show-reg-form-btn" class="primary-btn" style="max-width: 200px;">
+                            <i data-lucide="plus-circle" style="margin-right: 8px;"></i>Register Details
+                        </button>
+                        <button id="show-save-data-btn" class="primary-btn"
+                            style="max-width: 200px; background: linear-gradient(135deg, #10b981, #059669);">
+                            <i data-lucide="upload" style="margin-right: 8px;"></i>Save Data
+                        </button>
+                    </div>
+
+                    <!-- Password Details Form -->
                     <div id="details-reg-form-container" class="glass-card"
                         style="width: 100%; max-width: 500px; padding: 2rem; margin-top: 1.5rem; display: none;">
                         <h3 style="margin-bottom: 1.5rem; text-align: center;">New Entry</h3>
@@ -159,12 +160,35 @@
                                 <label>Purpose</label>
                                 <input type="text" id="det-purpose" required placeholder="e.g. Google, GitHub">
                             </div>
-                            <button type="submit" class="primary-btn">Save Entry</button>
+                            <button type="submit" class="primary-btn">Save Password Details</button>
+                        </form>
+                    </div>
+
+                    <!-- Save Data Form -->
+                    <div id="save-data-form-container" class="glass-card"
+                        style="width: 100%; max-width: 500px; padding: 2rem; margin-top: 1.5rem; display: none;">
+                        <h3 style="margin-bottom: 1.5rem; text-align: center;">Upload Personal Data</h3>
+                        <form id="save-data-form">
+                            <div class="input-group">
+                                <label>Data Name</label>
+                                <input type="text" id="save-data-name" required
+                                    placeholder="e.g. My Resume, Certificate">
+                            </div>
+                            <div class="input-group">
+                                <label>Upload File</label>
+                                <input type="file" id="save-data-file" required
+                                    style="padding: 0.8rem; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; color: white; width: 100%;">
+                            </div>
+                            <button type="submit" class="primary-btn"
+                                style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <i data-lucide="save" style="margin-right: 8px;"></i>Save Data
+                            </button>
                         </form>
                     </div>
                 </div>
 
-                <div class="glass-card" style="width: 100%; max-width: 800px; padding: 1.5rem;">
+                <!-- Stored Details Table -->
+                <div class="glass-card" style="width: 100%; max-width: 800px; padding: 1.5rem; margin-bottom: 2rem;">
                     <h3 style="margin-bottom: 1rem;">Stored Details</h3>
                     <div class="scroll-container" style="overflow-x: auto;">
                         <table style="width: 100%; border-collapse: collapse; text-align: left;">
@@ -182,7 +206,17 @@
                         </table>
                     </div>
                 </div>
+
+                <!-- Personal Data Section -->
+                <div class="glass-card" style="width: 100%; max-width: 800px; padding: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem; color: #10b981;">Personal Data</h3>
+                    <div id="personal-data-list" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <p style="color: var(--text-muted); text-align: center; padding: 1rem;">No files saved yet. Use
+                            "Save Data" to upload.</p>
+                    </div>
+                </div>
             </main>
+
         </section>
 
         <!-- Remove Account View -->
@@ -191,16 +225,13 @@
                 <div class="nav-left">
                     <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center" style="display: flex; align-items: center; gap: 1.5rem;">
-                    <div class="clock-display">00:00:00</div>
-                    <a href="#" id="rem-nav-details" class="nav-link"
-                        style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
-                        <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
-                    </a>
-                </div>
                 <div class="nav-right">
                     <div class="menu-items">
                         <a href="#" id="rem-nav-home" class="nav-link">Home</a>
+                        <a href="#" id="rem-nav-details" class="nav-link"
+                            style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
+                            <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
+                        </a>
                         <a href="#" id="rem-nav-password" class="nav-link">Password</a>
                         <button class="nav-link logout-btn">Logout</button>
                     </div>
@@ -234,16 +265,13 @@
                 <div class="nav-left">
                     <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center" style="display: flex; align-items: center; gap: 1.5rem;">
-                    <div class="clock-display">00:00:00</div>
-                    <a href="#" id="pass-nav-details" class="nav-link"
-                        style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
-                        <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
-                    </a>
-                </div>
                 <div class="nav-right">
                     <div class="menu-items">
                         <a href="#" id="pass-nav-home" class="nav-link">Home</a>
+                        <a href="#" id="pass-nav-details" class="nav-link"
+                            style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
+                            <i data-lucide="list" style="width:16px; margin-right:4px"></i>Details
+                        </a>
                         <a href="#" class="nav-link active">Password</a>
                         <button class="nav-link logout-btn">Logout</button>
                     </div>
