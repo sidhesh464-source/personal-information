@@ -528,6 +528,17 @@ function setupEventListeners() {
             if (icon) { icon.setAttribute('data-lucide', isP ? 'eye-off' : 'eye'); window.lucide.createIcons(); }
         };
     }
+
+    const toggleRegBtn = document.getElementById('toggle-reg-password');
+    const regPInput = document.getElementById('reg-password');
+    if (toggleRegBtn && regPInput) {
+        toggleRegBtn.onclick = () => {
+            const isP = regPInput.type === 'password';
+            regPInput.type = isP ? 'text' : 'password';
+            const icon = toggleRegBtn.querySelector('i');
+            if (icon) { icon.setAttribute('data-lucide', isP ? 'eye-off' : 'eye'); window.lucide.createIcons(); }
+        };
+    }
 }
 
 function showToast(message, type) {

@@ -58,7 +58,12 @@
                     </div>
                     <div class="input-group">
                         <label for="reg-password">Password</label>
-                        <input type="password" id="reg-password" required placeholder="Create password">
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-password" required placeholder="Create password">
+                            <button type="button" id="toggle-reg-password" class="toggle-btn">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="primary-btn">
                         <span>Sign Up</span>
