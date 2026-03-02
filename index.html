@@ -22,7 +22,7 @@
         <section id="login-view" class="view active">
             <div class="glass-card auth-card">
                 <h1>Welcome Back</h1>
-                <p class="subtitle">Enter your credentials to access your dashboard</p>
+                <p class="subtitle"> Your Dashboard</p>
                 <form id="login-form">
                     <div class="input-group">
                         <label for="login-username">Username</label>
@@ -40,7 +40,7 @@
                     <button type="submit" class="primary-btn">
                         <span>Login</span>
                         <i data-lucide="arrow-right"></i>
-                    </button>
+                    </button><br>
                     <p class="switch-view">Don't have an account? <a href="#" id="go-to-register">Register here</a></p>
                 </form>
             </div>
@@ -50,7 +50,7 @@
         <section id="register-view" class="view">
             <div class="glass-card auth-card">
                 <h1>Create Account</h1>
-                <p class="subtitle">Join our premium experience</p>
+                <p class="subtitle"> Your Dashboard</p>
                 <form id="register-form">
                     <div class="input-group">
                         <label for="reg-username">Choose Username</label>
@@ -63,7 +63,7 @@
                     <button type="submit" class="primary-btn">
                         <span>Sign Up</span>
                         <i data-lucide="user-plus"></i>
-                    </button>
+                    </button><br>
                     <p class="switch-view">Already have an account? <a href="#" id="go-to-login">Login here</a></p>
                 </form>
             </div>
@@ -75,7 +75,7 @@
                 <div class="nav-left">
                     <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center" style="display: flex; align-items: center; gap: 0.8rem;">
+                <div class="nav-center" style="display: flex; align-items: center; gap: 1.5rem;">
                     <div id="real-time-clock" class="clock-display">00:00:00</div>
                     <a href="#" id="nav-details" class="nav-link"
                         style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
@@ -88,9 +88,6 @@
                         <a href="#" id="nav-password" class="nav-link">
                             <i data-lucide="lock" style="width:16px; margin-right:4px"></i>Password
                         </a>
-                        <a href="#" id="nav-remove" class="nav-link" style="color: #ef4444;">
-                            <i data-lucide="user-x" style="width:16px; margin-right:4px"></i>Remove
-                        </a>
                         <button id="logout-btn" class="nav-link logout-btn">
                             <i data-lucide="log-out" style="width:16px; margin-right:4px"></i>Logout
                         </button>
@@ -99,11 +96,10 @@
             </nav>
 
             <main class="dashboard-content">
-                <div class="hero-section">
+                <div class="hero-section" style="margin-top: 4rem;">
                     <h2 id="welcome-message">Hello, User</h2>
-                    <p>Experience your time in 3 dimensions of elegance.</p>
+                    <p>Experience Your Dashboard.</p>
                 </div>
-
                 <div class="calendar-3d-wrapper">
                     <div id="perspective-root" class="calendar-perspective-container">
                         <div id="calendar-3d-grid" class="calendar-3d-grid">
@@ -125,7 +121,7 @@
                 <div class="nav-left">
                     <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center" style="display: flex; align-items: center; gap: 0.8rem;">
+                <div class="nav-center" style="display: flex; align-items: center; gap: 1.5rem;">
                     <div class="clock-display">00:00:00</div>
                     <a href="#" class="nav-link active"
                         style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: 1px solid var(--primary);">
@@ -136,13 +132,11 @@
                     <div class="menu-items">
                         <a href="#" id="det-nav-home" class="nav-link">Home</a>
                         <a href="#" id="det-nav-password" class="nav-link">Password</a>
-                        <a href="#" id="det-nav-remove" class="nav-link" style="color: #ef4444;">Remove</a>
                         <button class="nav-link logout-btn">Logout</button>
                     </div>
                 </div>
             </nav>
-
-            <main class="dashboard-content" style="margin-top: 5rem;">
+            <main class="dashboard-content" style="margin-top: 14rem;">
                 <div class="details-header"
                     style="width: 100%; max-width: 800px; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center;">
                     <button id="show-reg-form-btn" class="primary-btn" style="max-width: 200px;">
@@ -195,9 +189,9 @@
         <section id="remove-view" class="view">
             <nav class="navbar">
                 <div class="nav-left">
-                    <span class="logo">📄</span>
+                    <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center" style="display: flex; align-items: center; gap: 0.8rem;">
+                <div class="nav-center" style="display: flex; align-items: center; gap: 1.5rem;">
                     <div class="clock-display">00:00:00</div>
                     <a href="#" id="rem-nav-details" class="nav-link"
                         style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
@@ -208,14 +202,11 @@
                     <div class="menu-items">
                         <a href="#" id="rem-nav-home" class="nav-link">Home</a>
                         <a href="#" id="rem-nav-password" class="nav-link">Password</a>
-                        <a href="#" class="nav-link active"
-                            style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Remove</a>
                         <button class="nav-link logout-btn">Logout</button>
                     </div>
                 </div>
             </nav>
-
-            <div class="glass-card auth-card" style="margin-top: 2rem; border-color: rgba(239, 68, 68, 0.3);">
+            <div class="glass-card auth-card" style="margin-top: 14rem; border-color: rgba(239, 68, 68, 0.3);">
                 <h1
                     style="background: linear-gradient(135deg, #fff 30%, #ef4444); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
                     Delete Account</h1>
@@ -241,9 +232,9 @@
         <section id="password-view" class="view">
             <nav class="navbar">
                 <div class="nav-left">
-                    <span class="logo">📄</span>
+                    <span class="logo">personal details</span>
                 </div>
-                <div class="nav-center" style="display: flex; align-items: center; gap: 0.8rem;">
+                <div class="nav-center" style="display: flex; align-items: center; gap: 1.5rem;">
                     <div class="clock-display">00:00:00</div>
                     <a href="#" id="pass-nav-details" class="nav-link"
                         style="background: rgba(255,255,255,0.08); border: 1px solid var(--primary);">
@@ -254,13 +245,11 @@
                     <div class="menu-items">
                         <a href="#" id="pass-nav-home" class="nav-link">Home</a>
                         <a href="#" class="nav-link active">Password</a>
-                        <a href="#" id="pass-nav-remove" class="nav-link" style="color: #ef4444;">Remove</a>
                         <button class="nav-link logout-btn">Logout</button>
                     </div>
                 </div>
             </nav>
-
-            <div class="glass-card auth-card" style="margin-top: 2rem;">
+            <div class="glass-card auth-card" style="margin-top: 14rem;">
                 <h1>Security</h1>
                 <p class="subtitle">Update security settings</p>
                 <form id="change-password-form">

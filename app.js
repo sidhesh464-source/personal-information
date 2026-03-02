@@ -1,15 +1,9 @@
-/**
- * Personal Details Dashboard - Application Logic
- */
-
-// --- State Management ---
 let currentUser = null;
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 
-const STORAGE_KEY = 'luxe_users_db';
+const STORAGE_KEY = 'personal_db_v2';
 
-// --- Selectors ---
 const views = {
     login: document.getElementById('login-view'),
     register: document.getElementById('register-view'),
@@ -19,7 +13,6 @@ const views = {
     password: document.getElementById('password-view')
 };
 
-// --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
     initAuth();
     startClock();
@@ -52,9 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- Authentication Logic ---
 function initAuth() {
-    const session = sessionStorage.getItem('luxe_session');
+    const session = sessionStorage.getItem('personal_session');
     if (session) {
         currentUser = JSON.parse(session);
         showView('home');
@@ -93,7 +85,7 @@ function handleLogin(username, password) {
 
     if (user) {
         currentUser = user;
-        sessionStorage.setItem('luxe_session', JSON.stringify(user));
+        sessionStorage.setItem('personal_session', JSON.stringify(user));
         showToast('Login successful!', 'success');
         showView('home');
         updateGreeting();
@@ -106,7 +98,7 @@ function handleLogin(username, password) {
 
 function handleLogout() {
     currentUser = null;
-    sessionStorage.removeItem('luxe_session');
+    sessionStorage.removeItem('personal_session');
     showView('login');
 }
 
@@ -163,11 +155,45 @@ function renderCalendar() {
     const today = new Date();
     const isCurrentMonth = today.getMonth() === currentMonth && today.getFullYear() === currentYear;
 
+    const users = getUsers();
+    const user = currentUser ? users.find(u => u.username === currentUser.username) : null;
+    const details = user ? (user.details || []) : [];
+
     for (let i = 1; i <= daysInMonth; i++) {
         const div = document.createElement('div');
         div.className = 'calendar-date';
+
+        const matchedDetails = details.filter(d => {
+            if (!d.date) return false;
+            const detDate = new Date(d.date);
+            return detDate.getFullYear() === currentYear && detDate.getMonth() === currentMonth && detDate.getDate() === i;
+        });
+
         if (isCurrentMonth && i === today.getDate()) div.classList.add('current');
-        div.textContent = i;
+
+        div.innerHTML = `<span>${i}</span>`;
+        if (matchedDetails.length > 0) {
+            const markers = document.createElement('div');
+            markers.style.display = 'flex';
+            markers.style.flexWrap = 'wrap';
+            markers.style.justifyContent = 'center';
+            markers.style.gap = '3px';
+            markers.style.marginTop = '4px';
+            markers.style.maxWidth = '80%';
+            matchedDetails.forEach(md => {
+                const dot = document.createElement('div');
+                dot.style.width = '6px';
+                dot.style.height = '6px';
+                dot.style.borderRadius = '50%';
+                dot.style.background = 'var(--primary)';
+                dot.style.boxShadow = '0 0 5px var(--primary)';
+                dot.title = md.purpose;
+                markers.appendChild(dot);
+            });
+            div.appendChild(markers);
+            div.style.flexDirection = 'column';
+        }
+
         div.style.transitionDelay = `${i * 10}ms`;
         grid.appendChild(div);
     }
@@ -188,15 +214,20 @@ function renderDetails() {
     }
 
     details.forEach((det, originalIndex) => {
-        // We prepend the tr to simulate reversing, so that new items are at the top
+        const dateStr = det.date ? new Date(det.date).toLocaleDateString() : 'N/A';
         const tr = document.createElement('tr');
         tr.style.borderBottom = '1px solid var(--glass-border)';
         tr.innerHTML = `
-            <td style="padding: 1rem; font-weight: 700; color: var(--secondary);">${det.purpose}</td>
+            <td style="padding: 1rem; font-weight: 700; color: var(--secondary);">
+                ${det.purpose}<br><small style="color:var(--text-muted);font-weight:normal;">${dateStr}</small>
+            </td>
             <td style="padding: 1rem;">${det.username}</td>
             <td style="padding: 1rem; font-family: monospace; color: var(--primary);">${det.pass}</td>
-            <td style="padding: 1rem; text-align: right;">
-                <button onclick="deleteDetail(${originalIndex})" style="background: transparent; border: none; color: #ef4444; cursor: pointer; padding: 5px;">
+            <td style="padding: 1rem; text-align: right; white-space: nowrap;">
+                <button onclick="editDetail(${originalIndex})" style="background: transparent; border: none; color: #10b981; cursor: pointer; padding: 5px; margin-right: 5px;" title="Replace/Edit">
+                    <i data-lucide="edit" style="width: 18px; height: 18px;"></i>
+                </button>
+                <button onclick="deleteDetail(${originalIndex})" style="background: transparent; border: none; color: #ef4444; cursor: pointer; padding: 5px;" title="Remove">
                     <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
                 </button>
             </td>
@@ -209,7 +240,6 @@ function renderDetails() {
     }
 }
 
-// Global function so onclick can call it
 window.deleteDetail = function (index) {
     if (!confirm('Are you sure you want to remove this detail?')) return;
 
@@ -223,15 +253,34 @@ window.deleteDetail = function (index) {
     }
 }
 
-// --- Event Listeners ---
+window.editDetail = function (index) {
+    const users = getUsers();
+    const user = users.find(u => u.username === currentUser.username);
+    const det = user.details[index];
+    if (!det) return;
+
+    document.getElementById('det-username').value = det.username;
+    document.getElementById('det-password').value = det.pass;
+    document.getElementById('det-purpose').value = det.purpose;
+
+    const form = document.getElementById('record-details-form');
+    form.dataset.editIndex = index;
+
+    const regFormContainer = document.getElementById('details-reg-form-container');
+    regFormContainer.style.display = 'block';
+
+    const showRegBtn = document.getElementById('show-reg-form-btn');
+    if (showRegBtn) showRegBtn.innerHTML = '<i data-lucide="x-circle" style="margin-right:8px;"></i>Close Form';
+    form.querySelector('button[type="submit"]').textContent = 'Replace Entry';
+    window.lucide.createIcons();
+}
+
 function setupEventListeners() {
-    // Navigation
     document.getElementById('go-to-register').onclick = (e) => { e.preventDefault(); showView('register'); };
     document.getElementById('go-to-login').onclick = (e) => { e.preventDefault(); showView('login'); };
 
     document.querySelectorAll('.logout-btn').forEach(btn => btn.onclick = handleLogout);
 
-    // Dynamic View Switchers
     const navMapping = {
         'nav-home': 'home',
         'nav-details': 'details',
@@ -260,7 +309,6 @@ function setupEventListeners() {
         }
     });
 
-    // Details Entry Logic
     const showRegBtn = document.getElementById('show-reg-form-btn');
     const regFormContainer = document.getElementById('details-reg-form-container');
     if (showRegBtn) {
@@ -277,21 +325,35 @@ function setupEventListeners() {
         const users = getUsers();
         const userIdx = users.findIndex(u => u.username === currentUser.username);
         if (!users[userIdx].details) users[userIdx].details = [];
-        users[userIdx].details.push({
+        const newDet = {
             username: document.getElementById('det-username').value,
             pass: document.getElementById('det-password').value,
-            purpose: document.getElementById('det-purpose').value
-        });
+            purpose: document.getElementById('det-purpose').value,
+            date: new Date().toISOString()
+        };
+
+        const form = document.getElementById('record-details-form');
+        if (form.dataset.editIndex !== undefined) {
+            if (users[userIdx].details[form.dataset.editIndex].date) {
+                newDet.date = users[userIdx].details[form.dataset.editIndex].date;
+            }
+            users[userIdx].details[form.dataset.editIndex] = newDet;
+            showToast('Replaced successfully!', 'success');
+            delete form.dataset.editIndex;
+            form.querySelector('button[type="submit"]').textContent = 'Save Entry';
+        } else {
+            users[userIdx].details.push(newDet);
+            showToast('Saved successfully!', 'success');
+        }
+
         saveUsers(users);
-        showToast('Saved successfully!', 'success');
-        document.getElementById('record-details-form').reset();
+        form.reset();
         regFormContainer.style.display = 'none';
         showRegBtn.innerHTML = '<i data-lucide="plus-circle" style="margin-right:8px;"></i>Register Details';
         window.lucide.createIcons();
         renderDetails();
     };
 
-    // Account Removal Logic
     document.getElementById('remove-account-form').onsubmit = (e) => {
         e.preventDefault();
         const u = document.getElementById('rem-username').value;
@@ -310,16 +372,18 @@ function setupEventListeners() {
         }
     };
 
-    // Other Forms
     document.getElementById('login-form').onsubmit = (e) => {
         e.preventDefault();
-        handleLogin(document.getElementById('login-username').value, document.getElementById('login-password').value);
+        const p = document.getElementById('login-password').value;
+        if (p.includes('-')) return showToast('Password cannot contain hyphens (-)', 'error');
+        handleLogin(document.getElementById('login-username').value, p);
     };
 
     document.getElementById('register-form').onsubmit = (e) => {
         e.preventDefault();
         const p = document.getElementById('reg-password').value;
         if (!p) return showToast('Enter a password', 'error');
+        if (p.includes('-')) return showToast('Password cannot contain hyphens (-)', 'error');
         handleRegister(document.getElementById('reg-username').value, p);
     };
 
@@ -327,13 +391,14 @@ function setupEventListeners() {
         e.preventDefault();
         const curr = document.getElementById('current-p').value;
         const next = document.getElementById('new-p').value;
+        if (next.includes('-')) return showToast('Password cannot contain hyphens (-)', 'error');
         if (currentUser.password === curr) {
             const users = getUsers();
             const idx = users.findIndex(u => u.username === currentUser.username);
             users[idx].password = next;
             currentUser.password = next;
             saveUsers(users);
-            sessionStorage.setItem('luxe_session', JSON.stringify(currentUser));
+            sessionStorage.setItem('personal_session', JSON.stringify(currentUser));
             showToast('Security updated!', 'success');
         } else {
             showToast('Current password incorrect', 'error');
